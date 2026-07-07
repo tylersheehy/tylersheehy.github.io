@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SHEEHY, TYLER — GENERAL LEDGER</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ibm-plex/6.4.1/css/ibm-plex.min.css">
+<style>
+  :root{
+    --desk:#B9B4A3;
+    --paper:#F7FAF2;
+    --bar:#E3EEDF;
+    --ink:#1F2E27;
+    --ink-soft:#55665C;
+    --ink-faint:#7E8D83;
+    --rule:#A9C0AE;
+    --rule-strong:#5F7A67;
+    --margin-red:#D98A85;
+    --pencil-red:#AE2A21;
+    --pen-blue:#28497C;
+    --pen-blue-dark:#1B3560;
+    --stamp-red:#B23A2E;
+    --tied-green:#1E6E3C;
+    --hole:#E8E4D6;
+    --mono:"IBM Plex Mono","Courier New",ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation-duration:.001s !important;transition-duration:.001s !important}
+  }
+
+  body{
+    background:
+      radial-gradient(1200px 600px at 50% -100px, rgba(255,255,255,.35), transparent 60%),
+      var(--desk);
+    font-family:var(--mono);
+    color:var(--ink);
+    line-height:1.6;
+    font-size:15px;
+    padding:34px 10px 90px;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ================= continuous-form paper ================= */
+  .paper{
+    max-width:980px;
+    margin:0 auto;
+    background:
+      repeating-linear-gradient(
+        to bottom,
+        var(--paper) 0px,
+        var(--paper) 34px,
+        var(--bar) 34px,
+        var(--bar) 68px
+      );
+    border:1px solid #A6A18E;
+    border-radius:1px;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.6) inset,
+      0 2px 6px rgba(35,45,35,.18),
+      0 22px 55px rgba(35,45,35,.30);
+    position:relative;
+    padding:0 66px;
+  }
+  .paper::before,.paper::after{
+    content:"";
+    position:absolute;top:0;bottom:0;width:46px;z-index:2;
+    background-image:radial-gradient(circle at 23px 23px, var(--hole) 6px, rgba(0,0,0,.22) 6.8px, rgba(0,0,0,.06) 7.4px, transparent 8.2px);
+    background-size:46px 46px;
+  }
+  .paper::before{left:0;border-right:1px dashed var(--rule)}
+  .paper::after{right:0;border-left:1px dashed var(--rule)}
+  .paper .redrule{
+    position:absolute;top:0;bottom:0;left:96px;width:5px;z-index:1;
+    border-left:1px solid var(--margin-red);
+    border-right:1px solid var(--margin-red);
+    opacity:.75;pointer-events:none;
+  }
+
+  .inner{padding:44px 12px 60px;position:relative;z-index:3}
+
+  /* ================= masthead ================= */
+  .runline{
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px 22px;
+    font-size:11.5px;color:var(--ink-soft);
+    letter-spacing:.08em;
+    padding-bottom:10px;
+    border-bottom:1px solid var(--rule-strong);
+  }
+  .masthead{
+    border-bottom:3px double var(--ink);
+    padding:26px 0 22px;
+    position:relative;
+  }
+  h1{
+    font-weight:700;
+    font-size:clamp(24px,4.6vw,44px);
+    letter-spacing:.05em;
+    line-height:1.1;
+  }
+  .typed .caret::after{
+    content:"█";
+    animation:blink 1.05s steps(1) infinite;
+    color:var(--pen-blue);
+    font-weight:400;
+  }
+  @keyframes blink{50%{opacity:0}}
+  .subtitle{
+    margin-top:10px;
+    font-size:12.5px;letter-spacing:.22em;color:var(--ink-soft);
+    text-transform:uppercase;
+  }
+  .file-stamp{
+    position:absolute;right:0;top:18px;
+    border:2.5px solid var(--stamp-red);color:var(--stamp-red);
+    font-size:11px;font-weight:700;letter-spacing:.24em;
+    padding:5px 12px 4px;transform:rotate(6deg);
+    opacity:.82;mix-blend-mode:multiply;
+    -webkit-mask-image:radial-gradient(circle at 30% 40%, black 55%, rgba(0,0,0,.72) 100%);
+            mask-image:radial-gradient(circle at 30% 40%, black 55%, rgba(0,0,0,.72) 100%);
+  }
+
+  /* ================= binder index nav ================= */
+  .binder{
+    display:flex;flex-wrap:wrap;gap:0;
+    border-bottom:1.5px solid var(--ink);
+    margin-top:2px;
+  }
+  .binder .idx-label{
+    font-size:10.5px;letter-spacing:.2em;color:var(--ink-faint);
+    text-transform:uppercase;align-self:center;padding:12px 16px 10px 0;
+  }
+  .binder a{
+    font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--pen-blue);text-decoration:none;
+    padding:12px 16px 10px;
+    border-left:1px dotted var(--rule);
+    position:relative;
+    transition:background .15s;
+  }
+  .binder a:hover{background:rgba(40,73,124,.08)}
+  .binder a:focus-visible{outline:2px solid var(--pen-blue);outline-offset:-2px}
+  .binder a.here{
+    color:var(--ink);
+    background:rgba(255,255,255,.6);
+  }
+  .binder a.here::after{
+    content:"";position:absolute;left:14px;right:14px;bottom:0;height:3px;
+    background:var(--pencil-red);
+  }
+
+  .headnote{
+    margin-top:24px;
+    max-width:660px;
+    font-size:14px;
+    color:var(--ink);
+  }
+  .headnote em{
+    font-style:normal;
+    background:linear-gradient(transparent 60%, #F5E296 60%, #F5E296 92%, transparent 92%);
+    padding:0 2px;
+  }
+  .headnote .instr{display:block;margin-top:12px;color:var(--ink-soft);font-size:13px}
+  .headnote .instr b{color:var(--pen-blue);font-weight:700}
+
+  /* in-copy links (blue pen) */
+  a.pen{color:var(--pen-blue);font-weight:700;text-decoration:none;border-bottom:1px solid var(--pen-blue)}
+  a.pen:hover{background:rgba(40,73,124,.1)}
+
+  /* ================= pages ================= */
+  .page{display:none}
+  .page.active{display:block;animation:pageIn .3s ease}
+  @keyframes pageIn{from{opacity:0}to{opacity:1}}
+
+  .backline{margin-top:60px;font-size:12px}
+
+  /* ================= sections ================= */
+  section{margin-top:72px}
+  .page > section:first-of-type,.page > .pg-intro + section{margin-top:56px}
+  .pg-intro{margin-top:26px;max-width:680px;font-size:14px}
+  .pg-intro .muted{color:var(--ink-soft)}
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  .sec-head{
+    display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+    border-top:3px double var(--ink);
+    border-bottom:1px solid var(--ink);
+    padding:9px 0;
+  }
+  .sec-head .form-no{
+    font-size:10.5px;font-weight:700;border:1.5px solid var(--ink);
+    padding:3px 8px 2px;letter-spacing:.14em;
+    background:var(--paper);
+  }
+  .sec-head h2{font-size:15px;letter-spacing:.16em;text-transform:uppercase;font-weight:700}
+  .sec-head .sec-note{font-size:11.5px;color:var(--ink-faint);margin-left:auto;letter-spacing:.04em}
+
+  /* ================= chart of accounts ================= */
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  .coa th{
+    text-align:left;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-soft);padding:12px 10px 7px;border-bottom:1.5px solid var(--rule-strong);
+    font-weight:600;
+  }
+  .coa th.num,.coa td.bal{text-align:right}
+  .coa td{padding:11px 10px;border-bottom:1px dotted var(--rule);vertical-align:baseline}
+  .coa .acct{font-weight:700;white-space:nowrap;color:var(--pen-blue)}
+  .coa tr.row{cursor:pointer;transition:background .15s}
+  .coa tr.row:hover td{background:rgba(40,73,124,.07)}
+  .coa tr.row:focus-visible{outline:2px solid var(--pen-blue);outline-offset:-2px}
+  .coa .bal{white-space:nowrap;font-variant-numeric:tabular-nums}
+  .coa .toggle{color:var(--pen-blue);font-weight:700;text-align:center;width:44px}
+  .coa tr.detail{display:none}
+  .coa tr.detail.open{display:table-row}
+  .coa tr.detail td{
+    background:rgba(255,255,255,.65);
+    border-left:3px solid var(--pen-blue);
+    border-bottom:1px solid var(--rule);
+    color:var(--ink-soft);font-size:13px;padding:14px 16px;line-height:1.65;
+  }
+  .meter{letter-spacing:1.5px;font-size:13px}
+  .meter .on{color:var(--pen-blue)}
+  .meter .off{color:var(--rule)}
+
+  /* ================= journal ================= */
+  .je{
+    border:1.5px solid var(--ink);
+    background:rgba(255,255,255,.58);
+    box-shadow:0 1px 0 rgba(255,255,255,.7) inset, 0 3px 10px rgba(35,45,35,.07);
+    margin-top:30px;position:relative;
+  }
+  .je-head{
+    display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+    padding:10px 16px;border-bottom:1px solid var(--ink);
+    font-size:11.5px;letter-spacing:.1em;color:var(--ink-soft);
+    background:rgba(255,255,255,.45);
+  }
+  .je-head .je-no{font-weight:700;color:var(--ink)}
+  .je-title{padding:16px 16px 2px;font-weight:700;font-size:16px;letter-spacing:.02em}
+  .je-role{padding:0 16px;color:var(--ink-soft);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase}
+  .je table{margin:12px 0 0}
+  .je td,.je th{padding:7px 16px;font-size:13.5px}
+  .je th{
+    text-align:left;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-soft);border-bottom:1px solid var(--rule);font-weight:600;
+  }
+  .je th.num{text-align:right}
+  .je td.amt{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;width:110px}
+  .je tr.cr td:first-child{padding-left:44px;color:var(--ink-soft)}
+  .je tbody tr:last-child td{border-bottom:1px solid var(--rule)}
+  .je .memo{padding:12px 16px 16px;color:var(--ink-soft);font-size:13px}
+  .memo ul{list-style:none}
+  .memo li{padding-left:22px;position:relative;margin-top:6px;line-height:1.6}
+  .memo li::before{content:"—";position:absolute;left:2px;color:var(--rule-strong)}
+  .tick{
+    color:var(--pencil-red);font-weight:700;cursor:help;position:relative;
+    border-bottom:1px dotted var(--pencil-red);padding:0 1px;
+  }
+  .tick .tip{
+    display:none;position:absolute;left:0;bottom:135%;z-index:8;
+    width:min(330px,72vw);background:var(--ink);color:var(--paper);
+    font-size:12px;padding:9px 11px;border-radius:2px;font-weight:400;line-height:1.55;
+    box-shadow:0 6px 18px rgba(0,0,0,.25);
+  }
+  .tick .tip::after{
+    content:"";position:absolute;top:100%;left:12px;
+    border:6px solid transparent;border-top-color:var(--ink);
+  }
+  .tick:hover .tip,.tick:focus .tip{display:block}
+
+  .post-row{
+    display:flex;align-items:center;gap:14px;justify-content:flex-end;
+    padding:12px 16px;border-top:1px solid var(--ink);flex-wrap:wrap;
+    background:rgba(255,255,255,.35);
+  }
+  .post-btn{
+    font-family:var(--mono);font-size:12.5px;font-weight:700;letter-spacing:.14em;
+    background:var(--pen-blue);color:#fff;border:none;padding:10px 24px;cursor:pointer;
+    box-shadow:0 2px 0 var(--pen-blue-dark);
+    transition:transform .08s, box-shadow .08s, background .15s;
+  }
+  .post-btn:hover{background:var(--pen-blue-dark)}
+  .post-btn:active{transform:translateY(2px);box-shadow:0 0 0 var(--pen-blue-dark)}
+  .post-btn:focus-visible{outline:3px solid var(--pencil-red);outline-offset:2px}
+  .post-btn[disabled]{background:var(--rule);box-shadow:none;cursor:default;color:var(--ink-soft)}
+
+  .stamp{
+    position:absolute;top:10px;right:14px;
+    border:3px solid var(--stamp-red);color:var(--stamp-red);
+    font-weight:700;letter-spacing:.2em;font-size:14px;
+    padding:5px 14px 4px;transform:rotate(-7deg);
+    opacity:0;pointer-events:none;
+    mix-blend-mode:multiply;
+    -webkit-mask-image:radial-gradient(circle at 35% 45%, black 50%, rgba(0,0,0,.7) 100%);
+            mask-image:radial-gradient(circle at 35% 45%, black 50%, rgba(0,0,0,.7) 100%);
+  }
+  .stamp.show{animation:stampIn .38s cubic-bezier(.2,2.1,.4,1) forwards}
+  @keyframes stampIn{
+    0%{opacity:0;transform:rotate(-7deg) scale(2.3)}
+    100%{opacity:.88;transform:rotate(-7deg) scale(1)}
+  }
+
+  /* ================= tickmark legend ================= */
+  .legend td{padding:10px 8px;border-bottom:1px dotted var(--rule);font-size:13.5px;vertical-align:top;line-height:1.6}
+  .legend .sym{color:var(--pencil-red);font-weight:700;white-space:nowrap;width:56px}
+
+  /* ================= notes ================= */
+  .notes .note{margin-top:22px;font-size:13.5px;line-height:1.7}
+  .notes .note h3{
+    font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--pen-blue);font-weight:700;margin-bottom:6px;
+  }
+  .notes .note p{max-width:700px;color:var(--ink)}
+  .notes .note .aside{color:var(--ink-soft)}
+
+  /* ================= trial balance ================= */
+  .tb{
+    position:sticky;bottom:14px;z-index:20;
+    margin-top:80px;
+    border:2px solid var(--ink);
+    background:var(--paper);
+    box-shadow:0 -2px 0 rgba(255,255,255,.6) inset, 0 10px 30px rgba(30,40,30,.28);
+  }
+  .tb::before{
+    content:"";position:absolute;left:0;right:0;top:0;height:4px;
+    background:repeating-linear-gradient(90deg, var(--ink) 0 8px, transparent 8px 12px);
+    opacity:.15;
+  }
+  .tb-head{
+    display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;
+    padding:9px 16px;border-bottom:1px solid var(--ink);
+    font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  }
+  .tb-head .tb-count{color:var(--ink-soft)}
+  .tb-body{
+    display:grid;grid-template-columns:auto auto 1fr;gap:8px 34px;
+    padding:12px 16px;align-items:center;
+  }
+  .tb-col{font-variant-numeric:tabular-nums;font-size:17px;font-weight:700}
+  .tb-col b{display:block;font-size:10px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;font-weight:400;margin-bottom:1px}
+  .tb-status{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-align:right}
+  .tb-status.out{color:var(--pencil-red)}
+  .tb-status.tied{color:var(--tied-green)}
+  @media (max-width:620px){
+    .tb-body{grid-template-columns:1fr 1fr}
+    .tb-status{grid-column:1 / -1;text-align:left}
+  }
+
+  .approve{
+    position:fixed;inset:0;display:none;align-items:center;justify-content:center;
+    pointer-events:none;z-index:50;
+  }
+  .approve.show{display:flex}
+  .approve .big-stamp{
+    border:6px solid var(--stamp-red);color:var(--stamp-red);
+    font-size:clamp(26px,6vw,54px);font-weight:700;letter-spacing:.14em;
+    padding:18px 40px;transform:rotate(-9deg);
+    background:rgba(247,250,242,.92);
+    mix-blend-mode:multiply;
+    -webkit-mask-image:radial-gradient(circle at 40% 40%, black 55%, rgba(0,0,0,.75) 100%);
+            mask-image:radial-gradient(circle at 40% 40%, black 55%, rgba(0,0,0,.75) 100%);
+    animation:stampBig .5s cubic-bezier(.2,2.1,.4,1) forwards;
+    text-align:center;line-height:1.25;
+    box-shadow:0 20px 60px rgba(30,40,30,.3);
+  }
+  @keyframes stampBig{
+    0%{opacity:0;transform:rotate(-9deg) scale(2.6)}
+    100%{opacity:.94;transform:rotate(-9deg) scale(1)}
+  }
+  .approve small{display:block;font-size:.32em;letter-spacing:.32em;margin-top:8px;color:var(--ink);font-weight:400}
+
+  /* ================= automation asset register ================= */
+  .asset{
+    border:1.5px solid var(--ink);
+    background:rgba(255,255,255,.58);
+    box-shadow:0 1px 0 rgba(255,255,255,.7) inset, 0 3px 10px rgba(35,45,35,.07);
+    margin-top:26px;
+  }
+  .asset-head{
+    display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+    padding:10px 16px;border-bottom:1px solid var(--ink);
+    font-size:11.5px;letter-spacing:.1em;color:var(--ink-soft);
+    background:rgba(255,255,255,.45);
+  }
+  .asset-head .asset-no{font-weight:700;color:var(--ink)}
+  .asset-head .status{color:var(--tied-green);font-weight:700}
+  .asset-head .status.cip{color:#9A6B00}
+  .asset-title{padding:16px 16px 4px;font-weight:700;font-size:16px}
+  .asset-body{padding:0 16px 16px;font-size:13.5px;color:var(--ink-soft);line-height:1.7;max-width:760px}
+  .asset-specs{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;
+    padding:14px 16px;border-top:1px dotted var(--rule);
+    font-size:12.5px;
+  }
+  .asset-specs b{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);font-weight:400;margin-bottom:2px}
+
+  /* ================= schedule m-1 ================= */
+  .m1 td{padding:11px 10px;border-bottom:1px dotted var(--rule);vertical-align:top;line-height:1.65}
+  .m1 th{
+    text-align:left;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-soft);padding:12px 10px 7px;border-bottom:1.5px solid var(--rule-strong);font-weight:600;
+  }
+  .m1 th.num,.m1 td.amt{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .m1 .line-no{color:var(--pen-blue);font-weight:700;white-space:nowrap;width:52px}
+  .m1 .desc b{color:var(--ink)}
+  .m1 .desc{color:var(--ink-soft);font-size:13.5px}
+  .m1 tfoot td{border-top:2px solid var(--ink);border-bottom:3px double var(--ink);font-weight:700;color:var(--ink)}
+
+  /* ================= engagement letter ================= */
+  .letter{
+    margin-top:56px;
+    border:1.5px solid var(--ink);
+    background:rgba(255,255,255,.62);
+    box-shadow:0 3px 10px rgba(35,45,35,.07);
+    padding:34px 34px 30px;
+    font-size:14px;line-height:1.75;
+    position:relative;
+  }
+  .letter .re{font-weight:700;margin:18px 0}
+  .letter p{margin:14px 0;max-width:720px}
+  .letter ol{margin:14px 0 14px 26px;max-width:700px}
+  .letter li{margin-top:8px}
+  .letter .sig-block{
+    margin-top:38px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:30px;max-width:700px;
+  }
+  .letter .sig{border-top:1px solid var(--ink);padding-top:6px;font-size:12px;color:var(--ink-soft);letter-spacing:.08em}
+  .letter .sig .name{font-family:"Segoe Script","Bradley Hand",cursive;font-size:22px;color:var(--pen-blue);letter-spacing:0;margin-bottom:2px}
+  .letter .draft-stamp{
+    position:absolute;top:22px;right:26px;
+    border:2.5px solid var(--pen-blue);color:var(--pen-blue);
+    font-size:11px;font-weight:700;letter-spacing:.24em;
+    padding:5px 12px 4px;transform:rotate(5deg);opacity:.75;
+    mix-blend-mode:multiply;
+  }
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:26px}
+  .cta{
+    display:inline-block;font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    text-decoration:none;padding:12px 26px;cursor:pointer;font-family:var(--mono);
+  }
+  .cta.primary{background:var(--pen-blue);color:#fff;box-shadow:0 2px 0 var(--pen-blue-dark);border:none}
+  .cta.primary:hover{background:var(--pen-blue-dark)}
+  .cta.primary:active{transform:translateY(2px);box-shadow:none}
+  .cta.ghost{border:1.5px solid var(--pen-blue);color:var(--pen-blue);background:transparent}
+  .cta.ghost:hover{background:rgba(40,73,124,.08)}
+
+  /* ================= remittance ================= */
+  .remit{margin-top:84px;padding-top:10px;position:relative}
+  .remit::before{
+    content:"";position:absolute;top:0;left:-14px;right:-14px;height:0;
+    border-top:2px dashed var(--rule-strong);
+  }
+  .remit .cutline{
+    font-size:10.5px;letter-spacing:.26em;color:var(--ink-faint);
+    text-transform:uppercase;text-align:center;margin-top:-19px;
+  }
+  .remit .cutline span{background:var(--paper);padding:0 12px}
+  .remit-box{
+    margin-top:20px;border:1.5px solid var(--ink);background:rgba(255,255,255,.62);
+    box-shadow:0 3px 10px rgba(35,45,35,.07);
+    padding:22px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;
+  }
+  .remit-box b{display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);font-weight:400;margin-bottom:3px}
+  .remit-box a{color:var(--pen-blue);font-weight:700;text-decoration:none;word-break:break-word}
+  .remit-box a:hover{text-decoration:underline}
+  .remit-box a.oneline{white-space:nowrap;word-break:normal}
+  .remit-box .linkedin-cell{grid-column:1 / -1}
+
+  footer{max-width:980px;margin:16px auto 0;font-size:10.5px;color:#6E6857;text-align:center;letter-spacing:.1em}
+
+  /* ================= mobile ================= */
+  @media (max-width:680px){
+    .paper{padding:0 36px}
+    .paper::before,.paper::after{width:28px;background-size:28px 34px;background-image:radial-gradient(circle at 14px 17px, var(--hole) 4.4px, rgba(0,0,0,.22) 5px, transparent 5.8px)}
+    .paper .redrule{left:58px}
+    .file-stamp{position:static;display:inline-block;margin-top:14px}
+    .binder .idx-label{width:100%;padding:12px 0 2px}
+    .binder a{border-left:none;border-top:1px dotted var(--rule);flex:1 1 46%;text-align:center}
+    .je td,.je th{padding:6px 10px}
+    .je tr.cr td:first-child{padding-left:24px}
+    .je td.amt{width:78px}
+    .coa th:nth-child(3),.coa td:nth-child(3){display:none}
+    .letter{padding:24px 18px}
+    .letter .draft-stamp{position:static;display:inline-block;margin-bottom:10px}
+  }
+</style>
+</head>
+<body>
+
+<div class="paper">
+  <div class="redrule" aria-hidden="true"></div>
+  <div class="inner">
+
+    <!-- ===== masthead (all pages) ===== -->
+    <div class="runline">
+      <span id="runDate">RUN DATE: —</span>
+      <span>PREPARED BY: TS</span>
+      <span>REVIEWED BY: YOU</span>
+      <span id="pageNo">PAGE 001</span>
+    </div>
+
+    <div class="masthead">
+      <div class="file-stamp">CANDIDATE FILE — OPEN</div>
+      <h1 class="typed"><span id="typeTarget"></span><span class="caret"></span></h1>
+      <div class="subtitle" id="pageSubtitle">General Ledger &amp; Supporting Workpapers · Boston, MA</div>
+    </div>
+
+    <nav class="binder" aria-label="Workpaper index">
+      <span class="idx-label">Index</span>
+      <a href="#/" data-route="home">General Ledger</a>
+      <a href="#/automation" data-route="automation">Exhibit 1 · Automation</a>
+      <a href="#/off-the-clock" data-route="offclock">Sch. M-1 · Off the Clock</a>
+      <a href="#/engagement" data-route="engagement">Engagement Letter</a>
+    </nav>
+
+    <!-- ================================================================
+         PAGE: HOME — GENERAL LEDGER
+         ================================================================ -->
+    <div class="page" id="page-home">
+
+      <p class="headnote pg-intro">
+        Tax associate, PwC Asset &amp; Wealth Management. I prepare partnership tax
+        deliverables by day and <em>build the automation that makes them faster</em> by
+        slightly-later-in-the-day.
+        <span class="instr">Every claim below carries a tickmark — hover the red symbols.
+        Then <b>post all four journal entries</b> and see if the trial balance ties.</span>
+      </p>
+
+      <section id="coa" class="reveal">
+        <div class="sec-head">
+          <span class="form-no">SCHEDULE A</span>
+          <h2>Chart of Accounts — Skills</h2>
+          <span class="sec-note">click any account to open its subledger</span>
+        </div>
+        <table class="coa">
+          <thead>
+            <tr><th>Acct №</th><th>Account name</th><th class="num">Proficiency</th><th></th></tr>
+          </thead>
+          <tbody id="coaBody"></tbody>
+        </table>
+      </section>
+
+      <section id="journal" class="reveal">
+        <div class="sec-head">
+          <span class="form-no">SCHEDULE B</span>
+          <h2>General Journal — Experience</h2>
+          <span class="sec-note">entries unposted until you say so</span>
+        </div>
+        <div id="jeContainer"></div>
+      </section>
+
+      <section id="legendSec" class="reveal">
+        <div class="sec-head">
+          <span class="form-no">SCHEDULE C</span>
+          <h2>Tickmark Legend</h2>
+        </div>
+        <table class="legend">
+          <tr><td class="sym">✓</td><td>Agreed to source documents without exception (i.e., this actually happened).</td></tr>
+          <tr><td class="sym">Φ</td><td>Footed and cross-footed. Math checks out. Twice.</td></tr>
+          <tr><td class="sym">⊕</td><td>Recalculated independently — usually with a Python script written at 9 PM. Specimens on file in <a class="pen" href="#/automation">Exhibit 1</a>.</td></tr>
+          <tr><td class="sym">PBC</td><td>Provided by climber. Grip strength immaterial to the audit but disclosed in <a class="pen" href="#/off-the-clock">Schedule M-1</a>.</td></tr>
+        </table>
+      </section>
+
+      <section id="notes" class="notes reveal">
+        <div class="sec-head">
+          <span class="form-no">SCHEDULE D</span>
+          <h2>Notes to the Workpapers — About Me</h2>
+        </div>
+        <div class="note">
+          <h3>Note 1 — Nature of Operations</h3>
+          <p>Asset &amp; Wealth Management Tax Associate at PwC with a Master's in
+          Accounting, currently pursuing my CPA license. Focused on developing strong
+          technical expertise in tax while leveraging data analytics and
+          problem-solving skills to deliver value to clients. Passionate about
+          continuous learning, professional growth, and making a positive impact
+          through business and sustainability initiatives.</p>
+        </div>
+        <div class="note">
+          <h3>Note 2 — Long-Term Commitments</h3>
+          <p>Eagle Scout, issued April 2020. <span class="aside">Rank is permanent —
+          no renewal filings, no amortization, carried at full value indefinitely.</span></p>
+        </div>
+        <div class="note">
+          <h3>Note 3 — Subsequent Events</h3>
+          <p><span class="aside">Ready to discuss the next engagement — see the
+          <a class="pen" href="#/engagement">draft engagement letter</a>.</span></p>
+        </div>
+      </section>
+
+      <div class="tb" id="tb" role="status" aria-live="polite">
+        <div class="tb-head">
+          <span>Trial Balance — Sheehy, T.</span>
+          <span class="tb-count" id="tbCount">0 of 4 entries posted</span>
+        </div>
+        <div class="tb-body">
+          <div class="tb-col"><b>Total debits</b><span id="tbDr">0.00</span></div>
+          <div class="tb-col"><b>Total credits</b><span id="tbCr">0.00</span></div>
+          <div class="tb-status out" id="tbStatus">OUT OF BALANCE — POST ENTRIES ABOVE</div>
+        </div>
+      </div>
+
+    </div><!-- /page-home -->
+
+    <!-- ================================================================
+         PAGE: AUTOMATION — EXHIBIT 1
+         ================================================================ -->
+    <div class="page" id="page-automation">
+
+      <p class="pg-intro">
+        Register of internally developed software — the tools I've built to take the
+        manual out of tax. <span class="muted">All assets in production. Depreciation:
+        none recorded; these appreciate with every busy season.</span>
+      </p>
+
+      <section class="reveal in">
+        <div class="sec-head">
+          <span class="form-no">EXHIBIT 1</span>
+          <h2>Fixed Asset Register — Internally Developed Software</h2>
+        </div>
+
+        <article class="asset">
+          <div class="asset-head"><span class="asset-no">ASSET IT-001</span><span class="status">● IN PRODUCTION</span></div>
+          <div class="asset-title">Agentic Workflow System</div>
+          <div class="asset-body">AI agents built on a structured context-file architecture and
+          deployed across the Boston AWM team. Agents handle repetitive tax workflow steps
+          end-to-end, cutting manual effort on covered workflows by roughly 95% and freeing
+          associate hours for review and judgment calls.</div>
+          <div class="asset-specs">
+            <div><b>In service</b>2026</div>
+            <div><b>Stack</b>AI agents · Context files</div>
+            <div><b>Impact</b>~95% manual effort reduction</div>
+          </div>
+        </article>
+
+        <article class="asset">
+          <div class="asset-head"><span class="asset-no">ASSET IT-002</span><span class="status cip">◐ IN TESTING</span></div>
+          <div class="asset-title">PE Tax Workpaper Preparation Tool</div>
+          <div class="asset-body">A standardized Python tool that prepares tax workpapers for
+          private equity clients — built with Claude Code, with a Microsoft PowerApps front end
+          for a user-friendly experience that can be applied across many clients. In testing,
+          it has saved up to 2 hours of prep time on a single fund, and it guarantees that
+          steps required on every fund actually run on every fund — 100% of the time.</div>
+          <div class="asset-specs">
+            <div><b>In service</b>2026 (testing)</div>
+            <div><b>Stack</b>Python · Claude Code · PowerApps</div>
+            <div><b>Impact</b>Up to 2 hrs saved per fund · required steps run 100% of the time</div>
+          </div>
+        </article>
+
+        <article class="asset">
+          <div class="asset-head"><span class="asset-no">ASSET IT-003</span><span class="status">● SUPPORTING</span></div>
+          <div class="asset-title">Data &amp; Analytics Bench</div>
+          <div class="asset-body">The supporting cast: SQL for querying, Power BI and Tableau for
+          dashboards, Alteryx for workflow automation (Designer Core certified). Used wherever a
+          refresh button beats a re-perform.</div>
+          <div class="asset-specs">
+            <div><b>Certification</b>Alteryx Designer Core</div>
+            <div><b>Stack</b>SQL · Power BI · Tableau · Alteryx</div>
+            <div><b>Impact</b>"Can someone check this?" → refresh</div>
+          </div>
+        </article>
+      </section>
+
+      <p class="backline"><a class="pen" href="#/">← Return to General Ledger</a></p>
+    </div><!-- /page-automation -->
+
+    <!-- ================================================================
+         PAGE: OFF THE CLOCK — SCHEDULE M-1
+         ================================================================ -->
+    <div class="page" id="page-offclock">
+
+      <p class="pg-intro">
+        Schedule M-1 reconciles book income to tax income. This one reconciles
+        <span class="muted">Tyler per the workpapers</span> to
+        <span class="muted">Tyler per actual life</span>. The items below are permanent
+        differences — they never reverse.
+      </p>
+
+      <section class="reveal in">
+        <div class="sec-head">
+          <span class="form-no">SCH. M-1</span>
+          <h2>Reconciliation of Book Tyler to Actual Tyler</h2>
+        </div>
+        <table class="m1">
+          <thead>
+            <tr><th>Line</th><th>Permanent differences (will not reverse)</th><th class="num">Amount</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="line-no">1</td>
+              <td class="desc"><b>Tyler per the workpapers</b> — spreadsheets, K-1s, tie-outs, deadlines met.</td>
+              <td class="amt">1,065.00</td>
+            </tr>
+            <tr>
+              <td class="line-no">2</td>
+              <td class="desc"><b>Add: Bouldering.</b> V7–V8 problems, three sessions a week on a structured
+              plan — projecting Mondays, technique Thursdays, weakness work Saturdays. Turns out
+              debugging a crux sequence and debugging a broken workbook use the same muscle.</td>
+              <td class="amt">7.08</td>
+            </tr>
+            <tr>
+              <td class="line-no">3</td>
+              <td class="desc"><b>Add: Building and fixing computers.</b> Hardware and software —
+              from part-picking and assembly to diagnosing whatever broke. Same instinct as
+              tax work: trace the problem to the source, fix it, document it.</td>
+              <td class="amt">10.10</td>
+            </tr>
+            <tr>
+              <td class="line-no">4</td>
+              <td class="desc"><b>Add: Eagle Scout (April 2020).</b> Prepared for everything,
+              including busy season.</td>
+              <td class="amt">4.20</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td class="line-no">5</td>
+              <td class="desc">Actual Tyler (line 1 plus lines 2–4)</td>
+              <td class="amt">1,086.38</td>
+            </tr>
+          </tfoot>
+        </table>
+      </section>
+
+      <p class="backline"><a class="pen" href="#/">← Return to General Ledger</a></p>
+    </div><!-- /page-offclock -->
+
+    <!-- ================================================================
+         PAGE: ENGAGEMENT LETTER
+         ================================================================ -->
+    <div class="page" id="page-engagement">
+
+      <div class="letter reveal in">
+        <div class="draft-stamp">DRAFT — FOR COUNTERSIGNATURE</div>
+        <p>July 6, 2026</p>
+        <p>To: The Reader of These Workpapers<br>From: Tyler Sheehy, Boston, MA</p>
+        <p class="re">Re: Proposed engagement of Tyler Sheehy</p>
+        <p>Dear Hiring Manager,</p>
+        <p>Thank you for reviewing the attached general ledger. This letter confirms the
+        terms under which I would be pleased to provide services. The scope of the
+        engagement includes, but is not limited to:</p>
+        <ol>
+          <li>Partnership tax expertise — Form 1065, Schedule K-1s, Form 8986, multi-state
+          filings, and fund allocation workflows, delivered accurately and on time;</li>
+          <li>Automation of anything performed manually more than twice, with documentation;</li>
+          <li>Data analytics support across SQL, Power BI, Tableau, and Alteryx;</li>
+          <li>An Eagle Scout's preparedness and a boulderer's stubbornness, applied to
+          whatever problem is on the desk.</li>
+        </ol>
+        <p>Fees to be discussed. References, transcripts, and source documents supporting
+        every tickmark in these workpapers are available upon request.</p>
+        <p>If the foregoing terms are acceptable, please countersign below — or simply
+        reach out. I respond to email faster than a same-day wire.</p>
+        <div class="sig-block">
+          <div class="sig"><div class="name">Tyler Sheehy</div>TYLER SHEEHY · CANDIDATE</div>
+          <div class="sig"><div class="name">&nbsp;</div>YOUR NAME HERE · FUTURE COLLEAGUE</div>
+        </div>
+        <div class="cta-row">
+          <a class="cta primary" href="mailto:tyler.sheehy3@gmail.com">Countersign via email ▸</a>
+          <a class="cta ghost" href="https://www.linkedin.com/in/tyler-sheehy" target="_blank" rel="noopener">Review on LinkedIn</a>
+        </div>
+      </div>
+
+      <p class="backline"><a class="pen" href="#/">← Return to General Ledger</a></p>
+    </div><!-- /page-engagement -->
+
+    <!-- ===== approve overlay (global) ===== -->
+    <div class="approve" id="approve" aria-hidden="true">
+      <div class="big-stamp">TIED &amp; APPROVED<small>no adjusting entries required</small></div>
+    </div>
+
+    <!-- ===== contact strip (all pages) ===== -->
+    <section class="remit">
+      <div class="cutline"><span>✂ detach and return this portion with your offer letter ✂</span></div>
+      <div class="remit-box">
+        <div><b>Remit to</b>Tyler Sheehy<br>Boston, MA 02127</div>
+        <div><b>Email</b><a href="mailto:tyler.sheehy3@gmail.com">tyler.sheehy3@gmail.com</a></div>
+        <div><b>Phone</b><a href="tel:8603315155">860.331.5155</a></div>
+        <div class="linkedin-cell"><b>LinkedIn</b><a class="oneline" href="https://www.linkedin.com/in/tyler-sheehy" target="_blank" rel="noopener">www.linkedin.com/in/tyler-sheehy</a></div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<footer>PRINTED ON CONTINUOUS-FORM GREEN-BAR PAPER · NO ACCOUNTANTS WERE HARMED IN THE FOOTING OF THIS LEDGER</footer>
+
+<script>
+/* ---------- live run date ---------- */
+(function(){
+  const d = new Date();
+  const mm = String(d.getMonth()+1).padStart(2,"0");
+  const dd = String(d.getDate()).padStart(2,"0");
+  const yy = String(d.getFullYear()).slice(-2);
+  document.getElementById("runDate").textContent = `RUN DATE: ${mm}/${dd}/${yy}`;
+})();
+
+/* ---------- typewriter header ---------- */
+(function(){
+  const text = "SHEEHY, TYLER";
+  const el = document.getElementById("typeTarget");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce){ el.textContent = text; return; }
+  let i = 0;
+  (function step(){
+    el.textContent = text.slice(0, ++i);
+    if (i < text.length) setTimeout(step, 60);
+  })();
+})();
+
+/* ---------- router ---------- */
+const routes = {
+  home:       {id:"page-home",       hash:"#/",              page:"PAGE 001", sub:"General Ledger &amp; Supporting Workpapers · Boston, MA"},
+  automation: {id:"page-automation", hash:"#/automation",    page:"PAGE 002", sub:"Exhibit 1 · Automation Subledger · Internally Developed Software"},
+  offclock:   {id:"page-offclock",   hash:"#/off-the-clock", page:"PAGE 003", sub:"Schedule M-1 · Book-to-Life Reconciliation"},
+  engagement: {id:"page-engagement", hash:"#/engagement",    page:"PAGE 004", sub:"Draft Engagement Letter · Awaiting Countersignature"},
+};
+
+function currentRoute(){
+  const h = location.hash;
+  for (const key in routes){
+    if (key !== "home" && h.startsWith(routes[key].hash)) return key;
+  }
+  return "home";
+}
+
+function render(){
+  const key = currentRoute();
+  const r = routes[key];
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById(r.id).classList.add("active");
+  document.getElementById("pageNo").textContent = r.page;
+  document.getElementById("pageSubtitle").innerHTML = r.sub;
+  document.querySelectorAll(".binder a").forEach(a=>{
+    a.classList.toggle("here", a.dataset.route === key);
+    if (a.dataset.route === key) a.setAttribute("aria-current","page");
+    else a.removeAttribute("aria-current");
+  });
+  window.scrollTo({top:0, behavior:"auto"});
+}
+window.addEventListener("hashchange", render);
+
+/* ---------- chart of accounts ---------- */
+const accounts = [
+  {no:"1065", name:"Partnership Taxation", lvl:9,
+   note:"Form 1065, Schedule K-1s, Form 8986, multi-state filings across multiple fund engagements. Named this account after the form because subtlety is for the notes to the financials."},
+  {no:"2010", name:"Excel (Advanced)", lvl:9,
+   note:"The native tongue. Complex workbooks, broken Name Manager entries repaired, 10-year reconciliations validated. Has strong opinions about merged cells (against)."},
+  {no:"3110", name:"Data Stack — SQL · Power BI · Tableau · Alteryx", lvl:7,
+   note:"Alteryx Designer Core certified. Queries, dashboards, and workflows that turn 'can someone check this?' into a refresh button."},
+  {no:"3300", name:"AI & Agentic Automation", lvl:9,
+   note:'Built AI-driven agentic tools at PwC that cut manual workflow effort ~95%. Full asset register with specs in <a class="pen" href="#/automation">Exhibit 1 — Automation</a>.'},
+  {no:"5000", name:"Financial Statement Analysis", lvl:8,
+   note:"Reads footnotes for fun. Validates FS-to-tax alignment and flags discrepancies before they become review comments."},
+  {no:"9460", name:"Fund Accounting & Allocations", lvl:8,
+   note:"Partner allocation workflows, book-to-tax adjustments, tie-outs of financial statements and footnotes to tax reporting for private equity and asset management clients. Account number per ASC 946 — Investment Companies, the fund accounting chapter of GAAP."},
+];
+
+const coaBody = document.getElementById("coaBody");
+accounts.forEach(a=>{
+  const on = "█".repeat(a.lvl), off = "░".repeat(10-a.lvl);
+  const row = document.createElement("tr");
+  row.className = "row";
+  row.tabIndex = 0;
+  row.setAttribute("role","button");
+  row.setAttribute("aria-expanded","false");
+  row.innerHTML = `<td class="acct">${a.no}</td><td>${a.name}</td>
+    <td class="bal"><span class="meter"><span class="on">${on}</span><span class="off">${off}</span></span></td>
+    <td class="toggle">[+]</td>`;
+  const detail = document.createElement("tr");
+  detail.className = "detail";
+  detail.innerHTML = `<td colspan="4">${a.note}</td>`;
+  function toggle(){
+    const open = detail.classList.toggle("open");
+    row.querySelector(".toggle").textContent = open ? "[–]" : "[+]";
+    row.setAttribute("aria-expanded", open);
+  }
+  row.addEventListener("click", toggle);
+  row.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle();} });
+  detail.addEventListener("click", e=>e.stopPropagation());
+  coaBody.append(row, detail);
+});
+
+/* ---------- journal entries ---------- */
+const entries = [
+  {
+    no:"JE-2026-001", date:"01/2026 — PRESENT",
+    org:"PwC — Boston, MA", role:"Tax Associate, Asset & Wealth Management",
+    lines:[
+      {acct:"Dr  1065 · Partnership deliverables shipped", amt:1065.00, side:"dr"},
+      {acct:"Dr  3300 · Manual effort eliminated via AI agents", amt:95.00, side:"dr"},
+      {acct:"Cr  Late nights (busy season, net of coffee)", amt:1160.00, side:"cr"},
+    ],
+    memo:[
+      `Prepare and review K-1s, Form 1065, Form 8986, and multi-state filings across multiple fund engagements <span class="tick" tabindex="0">✓<span class="tip">Agreed to engagement records. Multiple concurrent funds, deadlines met.</span></span>`,
+      `Built AI agentic solutions reducing manual workflow effort by 95% <span class="tick" tabindex="0">⊕<span class="tip">Recalculated: XML template scraper + context-file agent architecture, deployed across the Boston AWM team. See Exhibit 1.</span></span>`,
+      `Led trainings for new associates and developed process guides; introduced standardized templates cutting review time <span class="tick" tabindex="0">Φ<span class="tip">Cross-footed against the number of teammates who now refuse to work the old way.</span></span>`,
+    ]
+  },
+  {
+    no:"JE-2024-002", date:"05/2024 — 05/2025",
+    org:"Pratt & Whitney — East Hartford, CT", role:"Controller Accounting Intern",
+    lines:[
+      {acct:"Dr  5000 · Accounts reconciled (10-year dataset)", amt:520.00, side:"dr"},
+      {acct:"Dr  2010 · Internal controls strengthened", amt:404.00, side:"dr"},
+      {acct:"Cr  Human error (reduced to ~zero)", amt:924.00, side:"cr"},
+    ],
+    memo:[
+      `Reconciled accrual and cash accounts across a 10-year dataset with advanced Excel <span class="tick" tabindex="0">Φ<span class="tip">Footed, cross-footed, and survived. All balances validated.</span></span>`,
+      `Daily wire payment, journal entry, and package-tracking reporting with management <span class="tick" tabindex="0">✓<span class="tip">SAP/GL and SOX exposure — the good kind of exposure.</span></span>`,
+      `Co-led intern team presenting competitor analysis to 100+ professionals <span class="tick" tabindex="0">✓<span class="tip">Attendance sheet agreed without exception.</span></span>`,
+    ]
+  },
+  {
+    no:"JE-2025-003", date:"01/2025 — 05/2025",
+    org:"UConn VITA — Storrs, CT", role:"Volunteer Income Tax Preparer",
+    lines:[
+      {acct:"Dr  1040 · Federal & state returns prepared", amt:1040.00, side:"dr"},
+      {acct:"Cr  Taxpayer confusion (relieved)", amt:1040.00, side:"cr"},
+    ],
+    memo:[
+      `IRS Basic + Foreign Student/Scholar certified; applied tax treaty provisions for non-resident and resident aliens <span class="tick" tabindex="0">✓<span class="tip">Certifications on file. Treaty articles cited from memory, alarmingly.</span></span>`,
+      `Calculated taxable scholarship income and education credits for real humans, for free <span class="tick" tabindex="0">Φ<span class="tip">Refunds footed. Gratitude not quantified but material.</span></span>`,
+    ]
+  },
+  {
+    no:"JE-2019-004", date:"08/2019 — 01/2024",
+    org:"Dunkin' — Middlefield, CT", role:"Shift Leader (Origin Story)",
+    lines:[
+      {acct:"Dr  1010 · Cash drawers balanced daily", amt:100.00, side:"dr"},
+      {acct:"Cr  First reconciliations ever performed", amt:100.00, side:"cr"},
+    ],
+    memo:[
+      `Reconciled daily cash receipts to the penny before knowing the word "reconciliation" <span class="tick" tabindex="0">✓<span class="tip">Where the whole thing started. America may run on Dunkin'; Dunkin' ran on balanced drawers.</span></span>`,
+      `Led shift teams through morning rushes — deadline pressure training, disguised as donuts <span class="tick" tabindex="0">PBC<span class="tip">Provided by climber. Grip strength from carrying coffee trays now redirected to V7 boulders. See Schedule M-1.</span></span>`,
+    ]
+  },
+];
+
+const fmt = n => n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+const jeContainer = document.getElementById("jeContainer");
+let posted = 0, totDr = 0, totCr = 0;
+const GOAL = entries.length;
+
+entries.forEach(e=>{
+  const wrap = document.createElement("article");
+  wrap.className = "je reveal";
+  const rows = e.lines.map(l=>
+    `<tr class="${l.side}"><td>${l.acct}</td>
+     <td class="amt">${l.side==="dr"?fmt(l.amt):""}</td>
+     <td class="amt">${l.side==="cr"?fmt(l.amt):""}</td></tr>`).join("");
+  const memo = e.memo.map(m=>`<li>${m}</li>`).join("");
+  wrap.innerHTML = `
+    <div class="stamp">POSTED</div>
+    <div class="je-head"><span class="je-no">${e.no}</span><span>${e.date}</span></div>
+    <div class="je-title">${e.org}</div>
+    <div class="je-role">${e.role}</div>
+    <table>
+      <thead><tr><th>Account / description</th><th class="num">Debit</th><th class="num">Credit</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div class="memo"><ul>${memo}</ul></div>
+    <div class="post-row"><button class="post-btn" type="button">POST ENTRY ▸</button></div>`;
+  jeContainer.append(wrap);
+
+  const btn = wrap.querySelector(".post-btn");
+  btn.addEventListener("click", ()=>{
+    btn.disabled = true;
+    btn.textContent = "POSTED";
+    wrap.querySelector(".stamp").classList.add("show");
+    e.lines.forEach(l=> l.side==="dr" ? totDr+=l.amt : totCr+=l.amt);
+    posted++;
+    updateTB();
+  });
+});
+
+/* ---------- scroll reveals (home page) ---------- */
+(function(){
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const els = document.querySelectorAll("#page-home .reveal");
+  if (reduce || !("IntersectionObserver" in window)){
+    els.forEach(e=>e.classList.add("in")); return;
+  }
+  const io = new IntersectionObserver(list=>{
+    list.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target);} });
+  },{threshold:.1});
+  els.forEach(e=>io.observe(e));
+})();
+
+/* ---------- trial balance ---------- */
+function updateTB(){
+  document.getElementById("tbDr").textContent = fmt(totDr);
+  document.getElementById("tbCr").textContent = fmt(totCr);
+  document.getElementById("tbCount").textContent = `${posted} of ${GOAL} entries posted`;
+  const st = document.getElementById("tbStatus");
+  if (posted === GOAL && Math.abs(totDr - totCr) < 0.005){
+    st.textContent = "IN BALANCE — DEBITS = CREDITS ✓";
+    st.classList.remove("out"); st.classList.add("tied");
+    const ap = document.getElementById("approve");
+    ap.classList.add("show");
+    ap.setAttribute("aria-hidden","false");
+    setTimeout(()=>{ ap.classList.remove("show"); ap.setAttribute("aria-hidden","true"); }, 3400);
+  } else {
+    st.textContent = posted === 0
+      ? "OUT OF BALANCE — POST ENTRIES ABOVE"
+      : `POSTING IN PROGRESS — ${GOAL - posted} ENTR${GOAL-posted===1?"Y":"IES"} REMAINING`;
+  }
+}
+
+/* ---------- initial render ---------- */
+render();
+</script>
+</body>
+</html>
